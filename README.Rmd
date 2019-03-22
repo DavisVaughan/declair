@@ -1,0 +1,87 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+options(rlang_backtrace_on_error = "none")
+```
+
+# declair
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of declair is to provide standardized validation functions. It is inspired by `vctrs::vec_assert()` and motivated by frustration and duplication across packages when validating user input.
+
+## Installation
+
+You can install the released version of declair from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+# no you cannot
+install.packages("declair")
+```
+
+```r
+devtools::install_github("DavisVaughan/declair")
+```
+
+## Example
+
+```{r}
+library(declair)
+```
+
+Nice error messages based on type
+
+```{r, error=TRUE}
+dclr_is_character(1)
+```
+
+Expressions are auto labeled
+
+```{r, error=TRUE}
+x <- 1
+dclr_is_character(x)
+```
+
+Works with function arguments
+
+```{r, error=TRUE}
+fn <- function(my_arg) {
+  dclr_is_scalar_character(my_arg)
+}
+
+fn(x)
+
+fn(c("x", "y"))
+```
+
+Lots of extra helpers based on rlang goodies
+
+```{r, error=TRUE}
+dclr_has_name(mtcars, "x")
+```
+
+```{r, error=TRUE}
+dclr_is_integerish(1.5)
+
+dclr_is_integerish(1)
+
+dclr_is_bool(1)
+```
+
+You can use `dclr()` on any custom ptype and size.
+
+```{r, error=TRUE}
+dclr(1, ptype = glue::glue(), size = 1)
+```
