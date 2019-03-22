@@ -1,3 +1,4 @@
+#' @export
 dclr_or <- function(...) {
   dclr_quos <- rlang::enquos(...)
 
@@ -20,6 +21,7 @@ dclr_or <- function(...) {
   invisible(NULL)
 }
 
+#' @export
 dclr_and <- function(...) {
   dclr_quos <- rlang::enquos(...)
 

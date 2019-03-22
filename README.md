@@ -77,6 +77,49 @@ dclr_is_bool(1)
 #> Error: `1` must be <bool> (TRUE / FALSE), not <dbl>.
 ```
 
+Combine multiple checks with `dclr_or()` and `dclr_and()`
+
+``` r
+x <- 1L
+
+# All good because the second condition passes
+dclr_or(dclr_is_character(x), dclr_is_integer(x))
+
+# This fails and tells you which condition caused the issue
+dclr_and(dclr_is_character(x), dclr_is_integer(x))
+#> Error: All conditions must pass. The following do not:
+#> - `x` must be <chr>, not <int>.
+
+# This fails because neither pass
+dclr_or(dclr_is_character(x), dclr_has_name(x, "a name"))
+#> Error: At least one condition must pass:
+#> - `x` must be <chr>, not <int>.
+#> - `x` must have name 'a name'.
+```
+
+`dclr_or()` is particularly useful if an argument defaults to `NULL` but
+can be other things.
+
+``` r
+x <- NULL
+
+# All good
+dclr_or(dclr_is_character(x), dclr_is_null(x))
+
+x <- "hi"
+
+# All good
+dclr_or(dclr_is_character(x), dclr_is_null(x))
+
+# Not good!
+x <- TRUE
+
+dclr_or(dclr_is_character(x), dclr_is_null(x))
+#> Error: At least one condition must pass:
+#> - `x` must be <chr>, not <lgl>.
+#> - `x` must be NULL.
+```
+
 You can use `dclr()` on any custom ptype and size.
 
 ``` r
